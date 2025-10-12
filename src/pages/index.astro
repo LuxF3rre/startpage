@@ -1,0 +1,195 @@
+---
+const title = "~/";
+---
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+		<style>
+			@font-face {
+				font-family: 'JetBrainsMonoNLNerdFontMono';
+				src: url('/fonts/JetBrainsMonoNLNerdFontMono-Regular.ttf') format('truetype');
+				font-weight: normal;
+				font-style: normal;
+			}
+
+			:root {
+				/* Catppuccin Macchiato Color Palette */
+				--color-background: #24273a;
+				--color-text: #cad3f5;
+				--color-accent-mauve: #c6a0f6;
+				--color-accent-rosewater: #f4dbd6;
+
+				/* Typography */
+				--font-family: 'JetBrainsMonoNLNerdFontMono', 'JetBrains Mono', monospace;
+				--font-size-base: 25px;
+				--font-size-title: 2em;
+
+				/* Spacing */
+				--spacing-sm: 0.5em;
+				--spacing-md: 1em;
+				--spacing-lg: 2em;
+			}
+
+			*,
+			*::before,
+			*::after {
+				box-sizing: border-box;
+			}
+
+			html {
+				background-color: var(--color-background);
+				color: var(--color-text);
+				font-family: var(--font-family);
+				font-size: var(--font-size-base);
+				height: 100%;
+				margin: 0;
+				overflow-x: hidden;
+			}
+
+			body {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				min-height: 100vh;
+				margin: 0;
+				padding: var(--spacing-md);
+				width: 100vw;
+			}
+
+			h1 {
+				font-size: var(--font-size-title);
+				grid-column: 1 / -1;
+				margin: 0;
+				text-align: center;
+				color: var(--color-accent-mauve);
+			}
+
+			a {
+				color: inherit;
+				text-decoration: none;
+				transition: color 0.2s ease;
+			}
+
+			a:hover {
+				color: var(--color-accent-rosewater);
+			}
+
+			a:focus {
+				outline: 2px solid var(--color-accent-mauve);
+				outline-offset: 2px;
+			}
+
+			nav {
+				display: grid;
+				grid-template-columns: 1fr 1fr;
+				margin: 0 var(--spacing-md);
+				min-width: 0;
+				padding: var(--spacing-md) 0;
+			}
+
+			ul {
+				list-style-type: none;
+				margin: 0 auto;
+				padding: 0;
+				white-space: nowrap;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+			}
+
+			li:first-child {
+				font-weight: bold;
+				line-height: var(--spacing-lg);
+				color: var(--color-accent-rosewater);
+			}
+
+			img {
+				border: 2px solid var(--color-text);
+				height: auto;
+				object-fit: cover;
+				object-position: 50% 100%;
+				width: 10em;
+				max-width: 100%;
+			}
+
+			/* Responsive Design */
+			@media (max-width: 700px) {
+				html {
+					font-size: 90%;
+					padding: 0;
+				}
+
+				body {
+					flex-direction: column;
+					align-items: stretch;
+					justify-content: flex-start;
+					min-height: 100vh;
+					margin: 0;
+					padding: var(--spacing-sm);
+					width: 100vw;
+				}
+
+				nav {
+					grid-template-columns: 1fr;
+					min-width: 0;
+					padding: var(--spacing-sm) 0;
+					margin: 0;
+				}
+
+				img {
+					width: 100%;
+					max-width: 15em;
+					margin: 0 auto;
+					display: block;
+				}
+			}
+
+			@media (max-width: 400px) {
+				html {
+					font-size: 80%;
+				}
+
+				img {
+					max-width: 100%;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<nav>
+			<h1>ようこそ『LuxF3rre』</h1>
+			<ul>
+				<li>~/general</li>
+				<li><a href="https://calendar.google.com/calendar/u/0/r/week">calendar</a></li>
+				<li><a href="https://app.todoist.com/app/inbox">todoist</a></li>
+				<li><a href="https://app.reclaim.ai/planner">reclaim</a></li>
+				<li><a href="https://app.ynab.com/">ynab</a></li>
+			</ul>
+			<ul>
+				<li>~/media</li>
+				<li><a href="https://anilist.co/home">anilist</a></li>
+				<li><a href="https://listen.tidal.com/">tidal</a></li>
+			</ul>
+			<ul>
+				<li>~/social</li>
+				<li><a href="https://www.reddit.com/">reddit</a></li>
+				<li><a href="https://www.reddit.com/user/luxf3rre/m/ai/">reddit/ai</a></li>
+				<li><a href="https://x.com/home">x</a></li>
+				<li><a href="https://www.facebook.com/">facebook</a></li>
+			</ul>
+			<ul>
+				<li>~/ai</li>
+				<li><a href="https://claude.ai/new">claude</a></li>
+				<li><a href="https://openrouter.ai/models">openrouter</a></li>
+				<li><a href="https://huggingface.co/">huggingface</a></li>
+			</ul>
+		</nav>
+		<img src="/logo.png" alt="Anime character illustration" />
+	</body>
+</html>
