@@ -1,7 +1,7 @@
 ---
 import { Image } from "astro:assets";
 
-import logo from "../../public//logo.png";
+import logo from "../../public/logo.png";
 const title = "~/";
 ---
 
@@ -203,6 +203,13 @@ const title = "~/";
 				<li><a href="https://huggingface.co/">huggingface</a></li>
 			</ul>
 		</nav>
-		<Image src={logo} alt="Anime character illustration" />
+		<Image
+			src={logo}
+			alt="Anime character illustration"
+			layout="fixed"
+			width="246"
+			height="355"
+			}
+		/>
 	</body>
 </html>
