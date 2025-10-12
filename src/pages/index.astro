@@ -1,8 +1,11 @@
 ---
+import { Image } from "astro:assets";
+
+import logo from "../../public//logo.png";
 const title = "~/";
 ---
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
@@ -12,8 +15,9 @@ const title = "~/";
 		<title>{title}</title>
 		<style>
 			@font-face {
-				font-family: 'JetBrainsMonoNLNerdFontMono';
-				src: url('/fonts/JetBrainsMonoNLNerdFontMono-Regular.ttf') format('truetype');
+				font-family: "JetBrainsMonoNLNerdFontMono";
+				src: url("/fonts/JetBrainsMonoNLNerdFontMono-Regular.ttf")
+					format("truetype");
 				font-weight: normal;
 				font-style: normal;
 			}
@@ -26,7 +30,8 @@ const title = "~/";
 				--color-accent-rosewater: #f4dbd6;
 
 				/* Typography */
-				--font-family: 'JetBrainsMonoNLNerdFontMono', 'JetBrains Mono', monospace;
+				--font-family: "JetBrainsMonoNLNerdFontMono", "JetBrains Mono",
+					monospace;
 				--font-size-base: 25px;
 				--font-size-title: 2em;
 
@@ -166,7 +171,11 @@ const title = "~/";
 			<h1>ようこそ『LuxF3rre』</h1>
 			<ul>
 				<li>~/general</li>
-				<li><a href="https://calendar.google.com/calendar/u/0/r/week">calendar</a></li>
+				<li>
+					<a href="https://calendar.google.com/calendar/u/0/r/week"
+						>calendar</a
+					>
+				</li>
 				<li><a href="https://app.todoist.com/app/inbox">todoist</a></li>
 				<li><a href="https://app.reclaim.ai/planner">reclaim</a></li>
 				<li><a href="https://app.ynab.com/">ynab</a></li>
@@ -179,7 +188,11 @@ const title = "~/";
 			<ul>
 				<li>~/social</li>
 				<li><a href="https://www.reddit.com/">reddit</a></li>
-				<li><a href="https://www.reddit.com/user/luxf3rre/m/ai/">reddit/ai</a></li>
+				<li>
+					<a href="https://www.reddit.com/user/luxf3rre/m/ai/"
+						>reddit/ai</a
+					>
+				</li>
 				<li><a href="https://x.com/home">x</a></li>
 				<li><a href="https://www.facebook.com/">facebook</a></li>
 			</ul>
@@ -190,6 +203,6 @@ const title = "~/";
 				<li><a href="https://huggingface.co/">huggingface</a></li>
 			</ul>
 		</nav>
-		<img src="/logo.png" alt="Anime character illustration" />
+		<Image src={logo} alt="Anime character illustration" />
 	</body>
 </html>
