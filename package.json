@@ -3,9 +3,8 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "subset-font": "node scripts/subset-font.mjs",
-    "dev": "node scripts/subset-font.mjs && astro dev",
-    "build": "node scripts/subset-font.mjs && astro build",
+    "dev": "astro dev",
+    "build": "astro build",
     "preview": "astro preview",
     "astro": "astro"
   },
