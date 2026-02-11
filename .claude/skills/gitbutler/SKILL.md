@@ -1,190 +1,115 @@
 ---
 name: but
-version: 0.19.0
-description: Commit, push, branch, and manage version control. Use for git commit, git status, git push, git diff, creating branches, staging files, editing history, pull requests, or any git/version control operation. Replaces git write commands with 'but' - always use this instead of raw git.
+version: 0.19.1
+description: "Commit, push, branch, and manage version control with GitButler. Use for: commit my changes, check what changed, create a PR, push my branch, view diff, create branches, stage files, edit commit history, squash commits, amend commits, undo commits, pull requests, merge, stash work. Replaces git - use 'but' instead of git commit, git status, git push, git checkout, git add, git diff, git branch, git rebase, git stash, git merge. Covers all git, version control, and source control operations."
 author: GitButler Team
 ---
 
 # GitButler CLI Skill
 
-Help users work with GitButler CLI (`but` command) in workspace mode.
+Use GitButler CLI (`but`) as the default version-control interface.
 
-## Proactive Agent Workflow
+## Non-Negotiable Rules
 
-**CRITICAL:** Follow this pattern for EVERY task involving code changes:
+1. Use `but` for all write operations. Never run `git add`, `git commit`, `git push`, `git checkout`, `git merge`, `git rebase`, `git stash`, or `git cherry-pick`.
+2. Start every write/history-edit task with `but status --json`.
+3. For mutation commands, always add `--json --status-after`.
+4. Use CLI IDs from `but status --json` / `but diff --json` / `but show --json`; do not hardcode IDs and do not switch branches with `git checkout`.
+5. After a successful mutation with `--status-after`, do not run a redundant `but status` unless needed for new IDs.
+6. If the user says a `git` write command (for example "git push"), translate it to the `but` equivalent and execute the `but` command directly.
+7. For branch-update tasks, run `but pull --check --json` before `but pull --json --status-after`. Do not substitute `but fetch` + status summaries for this check.
+8. Avoid routine `--help` probes before mutations. Use the command patterns in this skill (and `references/reference.md`) first; only use `--help` when syntax is genuinely unclear or after a failed attempt.
 
-1. **Check state** → `but status --json` (always use `--json` for structured output)
-2. **Start work** → `but branch new <task-name>` (create stack for this work theme)
-3. **Make changes** → Edit files as needed
-4. **Commit work** → `but commit <branch> -m "message" --changes <id>,<id>` (commit specific files by CLI ID)
-5. **Refine** → Use `but absorb` or `but squash` to clean up history
-
-**Commit early, commit often.** Don't hesitate to create commits - GitButler makes editing history trivial. You can always `squash`, `reword`, or `absorb` changes into existing commits later. Small atomic commits are better than large uncommitted changes.
-
-## After Using Write/Edit Tools
-
-When ready to commit:
-
-1. Run `but status --json` to see uncommitted changes and get their CLI IDs
-2. Commit the relevant files directly: `but commit <branch> -m "message" --changes <id>,<id>`
-
-You can batch multiple file edits before committing - no need to commit after every single change.
-
-## Critical Concept: Workspace Model
-
-**GitButler ≠ Traditional Git**
-
-- **Traditional Git**: One branch at a time, switch with `git checkout`
-- **GitButler**: Multiple stacks simultaneously in one workspace, changes assigned to stacks
-
-**This means:**
-
-- ❌ Don't use `git status`, `git commit`, `git checkout`
-- ✅ Use `but status`, `but commit`, `but` commands
-- ✅ Read-only git commands are fine (`git log`, `git diff`)
-
-## Quick Start
-
-**Installation:**
-
-```bash
-curl -sSL https://gitbutler.com/install.sh | sh
-but setup                          # Initialize in your repo
-but skill install --path <path>    # Install/update skill (agents use --path with known location)
-```
-
-**Note for AI agents:**
-- When installing or updating this skill programmatically, always use `--path` to specify the exact installation directory. The `--detect` flag requires user interaction if multiple installations exist.
-- **Use `--json` flag for all commands** to get structured, parseable output. This is especially important for `but status --json` to reliably parse workspace state.
-
-**Core workflow:**
-
-```bash
-but status --json       # Always start here - shows workspace state (JSON for agents)
-but branch new feature  # Create new stack for work
-# Make changes...
-but commit <branch> -m "…" --changes <id>,<id>  # Commit specific files by CLI ID
-but push <branch>       # Push to remote
-```
-
-## Essential Commands
-
-For detailed command syntax and all available options, see [references/reference.md](references/reference.md).
-
-**IMPORTANT for AI agents:** Add `--json` flag to all commands for structured, parseable output.
-
-**Understanding state:**
-
-- `but status --json` - Overview (START HERE, always use --json for agents)
-- `but status --json -f` - Overview with full file lists (use when you need to see all changed files)
-- `but show <id> --json` - Details about commit/branch
-- `but diff <id>` - Show diff
-
-**Flags explanation:**
-- `--json` - Output structured JSON instead of human-readable text (always use for agents)
-- `-f` - Include detailed file lists in status output (combines with --json: `but status --json -f`)
-
-**Organizing work:**
-
-- `but branch new <name>` - Independent branch
-- `but branch new <name> -a <anchor>` - Stacked branch (dependent)
-- `but stage <file> <branch>` - Pre-assign file to branch (optional, for organizing before commit)
-
-**Making changes:**
-
-- `but commit <branch> -m "msg" --changes <id>,<id>` - Commit specific files or hunks (recommended)
-- `but commit <branch> -m "msg" -p <id>,<id>` - Same as above, using short flag
-- `but commit <branch> -m "msg"` - Commit ALL uncommitted changes to branch
-- `but commit <branch> --only -m "msg"` - Commit only pre-staged changes (cannot combine with --changes)
-- `but amend <file-id> <commit-id>` - Amend file into specific commit (explicit control)
-- `but absorb <file-id>` - Absorb file into auto-detected commit (smart matching)
-- `but absorb <branch-id>` - Absorb all changes staged to a branch
-- `but absorb` - Absorb ALL uncommitted changes (use with caution)
-
-**Getting IDs for --changes:**
-- **File IDs**: `but status --json` - commit entire files
-- **Hunk IDs**: `but diff --json` - commit individual hunks (for fine-grained control when a file has multiple changes)
-
-**Editing history:**
-
-- `but rub <source> <dest>` - Universal edit (stage/amend/squash/move)
-- `but squash <commits>` - Combine commits
-- `but reword <id>` - Change commit message/branch name
-
-**Remote operations:**
-
-- `but pull` - Update with upstream
-- `but push [branch]` - Push to remote
-- `but pr new <branch>` - Push and create pull request (auto-pushes, no need to push first)
-- `but pr new <branch> -m "Title..."` - Inline PR message (first line is title, rest is description)
-- `but pr new <branch> -F pr_message.txt` - PR message from file (first line is title, rest is description)
-- For stacked branches, the custom message (`-m` or `-F`) only applies to the selected branch; dependent branches use defaults
-
-## Key Concepts
-
-For deeper understanding of the workspace model, dependency tracking, and philosophy, see [references/concepts.md](references/concepts.md).
-
-**CLI IDs**: Every object gets a short ID (e.g., `c5` for commit, `bu` for branch). Use these as arguments.
-
-**Parallel vs Stacked branches**:
-
-- Parallel: Independent work that doesn't depend on each other
-- Stacked: Dependent work where one feature builds on another
-
-**The `but rub` primitive**: Core operation that does different things based on what you combine:
-
-- File + Branch → Stage
-- File + Commit → Amend
-- Commit + Commit → Squash
-- Commit + Branch → Move
-
-## Workflow Examples
-
-For complete step-by-step workflows and real-world scenarios, see [references/examples.md](references/examples.md).
-
-**Starting independent work:**
+## Core Flow
 
 ```bash
 but status --json
-but branch new api-endpoint
-but branch new ui-update
-# Make changes, then commit specific files to appropriate branches
-but status --json  # Get file CLI IDs
-but commit api-endpoint -m "Add endpoint" --changes <api-file-id>
-but commit ui-update -m "Update UI" --changes <ui-file-id>
+# If new branch needed:
+but branch new <name>
+# Perform task with IDs from status/diff/show
+but <mutation> ... --json --status-after
 ```
 
-**Committing specific hunks (fine-grained control):**
+## Canonical Command Patterns
 
-```bash
-but diff --json             # See hunk IDs when a file has multiple changes
-but commit <branch> -m "Fix first issue" --changes <hunk-id-1>
-but commit <branch> -m "Fix second issue" --changes <hunk-id-2>
-```
+- Commit specific files/hunks:
+  `but commit <branch> -m "<message>" --changes <id>,<id> --json --status-after`
+- Create branch while committing:
+  `but commit <branch> -c -m "<message>" --changes <id> --json --status-after`
+- Amend into a known commit:
+  `but amend <file-id> <commit-id> --json --status-after`
+- Reorder commits:
+  `but move <source-commit-id> <target-commit-id> --json --status-after`
+- Push:
+  `but push`
+  or
+  `but push <branch-id>`
+- Pull update safety flow:
+  `but pull --check --json`
+  then
+  `but pull --json --status-after`
 
-**Cleaning up commits:**
+## Task Recipes
 
-```bash
-but absorb              # Auto-amend changes
-but status --json       # Verify absorb result
-but squash <branch>     # Squash all commits in branch
-```
+### Commit one file
 
-**Resolving conflicts:**
+1. `but status --json`
+2. Find that file's `cliId`
+3. `but commit <branch> -c -m "<clear message>" --changes <file-id> --json --status-after`
 
-```bash
-but resolve <commit>    # Enter resolution mode
-# Fix conflicts in editor
-but resolve finish      # Complete resolution
-```
+### Commit only A, not B
 
-## Guidelines
+1. `but status --json`
+2. Find `src/a.rs` ID and `src/b.rs` ID
+3. Commit with `--changes <a-id>` only
 
-1. Always start with `but status --json` to understand current state (agents should always use `--json`)
-2. Create a new stack for each independent work theme
-3. Use `--changes` to commit specific files directly - no need to stage first
-4. **Commit early and often** - don't wait for perfection. Unlike traditional git, GitButler makes editing history trivial with `absorb`, `squash`, and `reword`. It's better to have small, atomic commits that you refine later than to accumulate large uncommitted changes.
-5. **Use `--json` flag for ALL commands** when running as an agent - this provides structured, parseable output instead of human-readable text
-6. Use `--dry-run` flags (push, absorb) when unsure
-7. Run `but pull` regularly to stay updated with upstream
-8. When updating this skill, use `but skill install --path <known-path>` to avoid prompts
+### User says "git push"
+
+Interpret as GitButler push. Run `but push` (or `but push <branch-id>`) immediately.
+Do not run `git push`, even if `but push` reports nothing to push.
+
+### Check mergeability, then update branches
+
+1. Run exactly: `but pull --check --json`
+2. If user asked to proceed, run: `but pull --json --status-after`
+3. Do not replace step 1 with `but fetch`, `but status`, or a narrative-only summary.
+
+### Amend into existing commit
+
+1. `but status --json`
+2. Locate file ID and commit ID from `status` (or `but show <branch-id> --json`)
+3. Run exactly: `but amend <file-id> <commit-id> --json --status-after`
+4. Never use `git checkout` or `git commit --amend`
+
+### Reorder commits
+
+1. `but status --json`
+2. Identify source/target commit IDs in the branch by commit message
+3. Run: `but move <commit-a> <commit-b> --json --status-after`
+4. From the returned `status`, refresh IDs and then run the inverse move:
+   `but move <commit-b> <commit-a> --json --status-after`
+5. This two-step sequence is the safe default for reorder requests.
+6. Never use `git rebase` for this.
+
+## Git-to-But Map
+
+- `git status` -> `but status --json`
+- `git add` + `git commit` -> `but commit ... --changes ... --json --status-after`
+- `git checkout -b` -> `but branch new <name>`
+- `git push` -> `but push`
+- `git rebase -i` -> `but move`, `but squash`, `but reword`
+- `git cherry-pick` -> `but pick`
+
+## Notes
+
+- Prefer explicit IDs over file paths for mutations.
+- `--changes` is the safe default for precise commits.
+- `--changes` accepts one argument per flag. For multiple IDs, use comma-separated values (`--changes a1,b2`) or repeat the flag (`--changes a1 --changes b2`), not `--changes a1 b2`.
+- Read-only git inspection is allowed (`git log`, `git blame`) when needed.
+- Keep skill version checks low-noise:
+  - Do not run `but skill check` as a routine preflight on every task.
+  - Run `but skill check` when command behavior appears to diverge from this skill (for example: unexpected unknown-flag errors, missing subcommands, or output shape mismatches), or when the user asks.
+  - If update is available, recommend `but skill check --update` (or run it if the user asked to update).
+- For deeper command syntax and flags, use `references/reference.md`.
+- For workspace model and dependency behavior, use `references/concepts.md`.
+- For end-to-end workflow patterns, use `references/examples.md`.
