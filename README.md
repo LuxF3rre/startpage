@@ -1,13 +1,18 @@
 # startpage
 
-A personal browser start page built with [Astro](https://astro.build/), featuring the [Catppuccin Macchiato](https://github.com/catppuccin/catppuccin) color palette and JetBrains Mono Nerd Font.
+A personal browser start page built with [Astro](https://astro.build/), featuring the [Catppuccin](https://github.com/catppuccin/catppuccin) color palette and JetBrains Mono Nerd Font.
 
 ![](image.png)
 
 ## Features
 
 - Categorized quick-access links (general, media, social, tech)
-- Catppuccin Macchiato theme
+- Catppuccin Macchiato (dark) and Latte (light) themes with system preference detection
+- Inline search — press `/` to filter links, with fallback to Brave Search
+- Keyboard navigation — Tab/Shift+Tab to cycle links, 1–4 to jump to categories
+- CRT-style dot grid overlay for a retro aesthetic
+- Fade-in animations with staggered timing
+- Theme-aware dynamic SVG favicon
 - JetBrains Mono Nerd Font with build-time optimization:
   - Automatic font subsetting — only characters actually used on the page are included
   - WOFF2 compression (reduces the ~2.3 MB TTF source to a few KB)
@@ -49,7 +54,14 @@ pnpm preview
 
 ## Customization
 
-Edit `src/pages/index.astro` to change the links, categories, title, or styling. Replace `src/assets/logo.png` with your own image.
+| What | Where |
+|------|-------|
+| Links & categories | `src/pages/index.astro` — edit the `<ul>` elements |
+| Logo | Replace `src/assets/logo.png` |
+| Page title | Change the `title` constant at the top of `index.astro` |
+| Theme colors | CSS custom properties in the `<style>` block of `index.astro` |
+| Search engine | Modify the fallback URL in the search handler script |
+| Keyboard shortcuts | Inline `<script>` section of `index.astro` |
 
 ## Tech Stack
 
