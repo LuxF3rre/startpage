@@ -348,21 +348,20 @@ const title = "~/";
 					margin: 0;
 				}
 
-				img {
-					width: 100%;
-					max-width: 15em;
-					margin: 0 auto;
-					display: block;
+				img,
+				[data-theme="light"] .logo-light {
+					display: none;
+				}
+
+				ul {
+					align-items: center;
+					padding: 0;
 				}
 			}
 
 			@media (max-width: 400px) {
 				html {
 					font-size: 80%;
-				}
-
-				img {
-					max-width: 100%;
 				}
 			}
 		</style>
