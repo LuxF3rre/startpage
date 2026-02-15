@@ -2,6 +2,7 @@
 import { Image } from "astro:assets";
 
 import logo from "../assets/logo.png";
+import logoLight from "../assets/logo-light.png";
 const title = "~/";
 ---
 
@@ -56,8 +57,20 @@ const title = "~/";
 			[data-theme="light"] {
 				--color-background: #eff1f5;
 				--color-text: #4c4f69;
-				--color-accent-mauve: #8839ef;
-				--color-accent-rosewater: #dc8a78;
+				--color-accent-mauve: #dc8a78;
+				--color-accent-rosewater: #8839ef;
+			}
+
+			.logo-light {
+				display: none;
+			}
+
+			[data-theme="light"] .logo-dark {
+				display: none;
+			}
+
+			[data-theme="light"] .logo-light {
+				display: block;
 			}
 
 			*,
@@ -409,7 +422,18 @@ const title = "~/";
 			</ul>
 		</nav>
 		<Image
+			class="logo-dark"
 			src={logo}
+			alt="Anime character illustration"
+			loading="lazy"
+			fetchpriority="high"
+			layout="fixed"
+			width="246"
+			height="355"
+		/>
+		<Image
+			class="logo-light"
+			src={logoLight}
 			alt="Anime character illustration"
 			loading="lazy"
 			fetchpriority="high"
